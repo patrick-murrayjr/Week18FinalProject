@@ -1,7 +1,7 @@
 import Container from 'react-bootstrap/Container';
 import Navbar from 'react-bootstrap/Navbar';
 import { Link } from 'react-router-dom';
-import { FaShoppingCart } from 'react-icons/fa';
+import CartCounter from './CartCounter';
 
 function Navigation() {
    return (
@@ -18,7 +18,7 @@ function Navigation() {
                      Orders
                   </Link>
                   <Link to='/cart' className=' ms-3 nav-item text-light'>
-                     <FaShoppingCart size={38} className='text-tertiary' />
+                     <CartCounter />
                   </Link>
                </Navbar.Collapse>
             </Container>
