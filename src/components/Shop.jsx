@@ -75,6 +75,9 @@ function Shop() {
             </Col>
          </Row>
          <Row>
+            {products.length === 0 && (
+               <h5 className='m-2 text-center text-warning'>Loading Products...</h5>
+            )}
             {products
                .filter(product => {
                   return (

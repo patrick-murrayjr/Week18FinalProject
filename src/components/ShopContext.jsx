@@ -1,18 +1,34 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
-import { createContext, useState } from 'react';
-import { PRODUCTS } from './test.js';
+import { createContext, useState, useEffect } from 'react';
 export const ShopContext = createContext(null);
 
-const initializeCart = () => {
-   let cart = {};
-   PRODUCTS.forEach(product => {
-      cart[product.id] = 0;
-   });
-   return cart;
-};
 const ShopContextProvider = props => {
-   const products = PRODUCTS;
-   const [cartItems, setCartItems] = useState(initializeCart());
+   const PRODUCTS_URL = 'https://fakestoreapi.com/products';
+   const [products, setProducts] = useState([]);
+   const [cartItems, setCartItems] = useState({});
+
+   useEffect(() => {
+      const fetchProducts = async () => {
+         try {
+            const response = await fetch(PRODUCTS_URL);
+            const data = await response.json();
+            setProducts(data);
+            setCartItems(initializeCart(data));
+         } catch (error) {
+            console.log(error);
+         }
+      };
+      fetchProducts();
+   }, []);
+
+   const initializeCart = products => {
+      let cart = {};
+      products.forEach(product => {
+         cart[product.id] = 0;
+      });
+      return cart;
+   };
 
    const addQtyToCart = (id, qty) => {
       setCartItems(prevState => {
@@ -32,7 +48,7 @@ const ShopContextProvider = props => {
    };
 
    const clearCart = () => {
-      setCartItems(initializeCart());
+      setCartItems(initializeCart(products));
    };
 
    const clearItem = id => {
