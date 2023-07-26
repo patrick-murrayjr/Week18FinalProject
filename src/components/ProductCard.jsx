@@ -18,6 +18,7 @@ const ProductCard = ({ setModalShow, setSelectedProduct, product }) => {
                style={{ maxWidth: '100%', maxHeight: '100%' }}
                src={image}
                alt={title}
+               title={title}
                className='m-auto p-3'
                fluid
                onClick={() => {
@@ -42,7 +43,7 @@ const ProductCard = ({ setModalShow, setSelectedProduct, product }) => {
                   variant='outline-primary'
                   className='rounded mb-2'
                   onClick={() => addItemToCart(id)}>
-                  Add Item{' '}
+                  Add Item
                   <span className='fw-bold'>
                      {cartItemAmount > 0 && `(${cartItemAmount})`}
                   </span>

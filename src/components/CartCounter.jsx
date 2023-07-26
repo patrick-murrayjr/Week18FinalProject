@@ -14,7 +14,7 @@ function CartCounter() {
                pill
                bg='warning'
                text='dark'
-               className='rounded-circle border border-light'
+               className='rounded-circle border border-light border-2'
                style={{ position: 'absolute', top: '0px', right: '5px' }}>
                <span className='fs-6'>{cartItemsCount > 0 && `${cartItemsCount}`}</span>
             </Badge>

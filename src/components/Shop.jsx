@@ -1,32 +1,56 @@
 /* eslint-disable react/prop-types */
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect, useRef } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
+import { BsFillArrowUpSquareFill } from 'react-icons/bs';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import ProductInfo from './ProductInfo';
 import ProductCard from './ProductCard';
 import { ShopContext } from './ShopContext';
 
-function Shop({ products }) {
+function Shop() {
    const [searchTerm, setSearchTerm] = useState('');
    const [modalShow, setModalShow] = useState(false);
    const [selectedProduct, setSelectedProduct] = useState({});
-   const { clearCart, cartItemsCount } = useContext(ShopContext);
+   const [scrollTop, setScrollTop] = useState(0);
+   const { clearCart, cartItemsCount, products } = useContext(ShopContext);
+   const buttonRef = useRef(null);
+
+   useEffect(() => {
+      const handleScroll = () => {
+         setScrollTop(window.scrollY);
+         if (scrollTop > 100) {
+            buttonRef.current.style.display = 'block';
+         } else {
+            buttonRef.current.style.display = 'none';
+         }
+      };
+
+      window.addEventListener('scroll', handleScroll);
+
+      return () => {
+         window.removeEventListener('scroll', handleScroll);
+      };
+   }, [scrollTop]);
+
    return (
       <Container fluid='lg' className='mb-5 p-5'>
          <Row>
             <Col>
                <Row className='text-center'>
                   <h2 className='text-center'>Products</h2>
-                  <Button
-                     variant='outline-primary'
-                     className='rounded mb-2 text-center mx-auto'
-                     onClick={() => clearCart()}>
-                     Clear Cart{' '}
-                     <span className='fw-bold'>
-                        {cartItemsCount > 0 && `(${cartItemsCount})`}
-                     </span>
-                  </Button>
+                  <div className='d-grid'>
+                     <Button
+                        variant='outline-primary'
+                        className='rounded mb-2 text-center'
+                        {...(cartItemsCount === 0 && { disabled: true })}
+                        onClick={() => clearCart()}>
+                        Clear Cart{' '}
+                        <span className='fw-bold'>
+                           {cartItemsCount > 0 && `(${cartItemsCount})`}
+                        </span>
+                     </Button>
+                  </div>
                </Row>
                <Form className='d-flex'>
                   <Form.Control
@@ -76,6 +100,24 @@ function Shop({ products }) {
             show={modalShow}
             onHide={() => setModalShow(false)}
          />
+         <Button
+            ref={buttonRef}
+            variant='info'
+            className='p-0 mx-text-center border-0'
+            onClick={() => {
+               document.body.scrollTop = 0;
+               setScrollTop(0);
+               document.documentElement.scrollTop = 0;
+            }}
+            style={{
+               display: 'none',
+               position: 'fixed',
+               top: '5px',
+               right: '5px',
+               zIndex: '99',
+            }}>
+            <BsFillArrowUpSquareFill size={38} className='bg-white text-warning' />
+         </Button>
       </Container>
    );
 }

@@ -11,29 +11,36 @@ const initializeCart = () => {
    return cart;
 };
 const ShopContextProvider = props => {
+   const products = PRODUCTS;
    const [cartItems, setCartItems] = useState(initializeCart());
+
+   const addQtyToCart = (id, qty) => {
+      setCartItems(prevState => {
+         return { ...prevState, [id]: prevState[id] + qty };
+      });
+   };
    const addItemToCart = id => {
       setCartItems(prevState => {
          return { ...prevState, [id]: prevState[id] + 1 };
       });
    };
+
    const removeItemFromCart = id => {
       setCartItems(prevState => {
          return { ...prevState, [id]: prevState[id] - 1 };
       });
    };
+
    const clearCart = () => {
       setCartItems(initializeCart());
    };
+
    const clearItem = id => {
       setCartItems(prevState => {
          return { ...prevState, [id]: 0 };
       });
    };
-   //    const cartTotal = Object.keys(cartItems).reduce((total, id) => {
-   //       const itemTotal = PRODUCTS.find(product => product.id === id).price * cartItems[id];
-   //       return total + itemTotal;
-   //    }, 0);
+
    const cartItemsCount = Object.keys(cartItems).reduce((total, id) => {
       return total + cartItems[id];
    }, 0);
@@ -42,12 +49,14 @@ const ShopContextProvider = props => {
       cartItems,
       addItemToCart,
       removeItemFromCart,
+      addQtyToCart,
       clearCart,
       clearItem,
       cartItemsCount,
+      products,
    };
 
-   //    console.log(cartItems);
+   // console.log(cartItems);
    return (
       <ShopContext.Provider value={contextValue}>{props.children}</ShopContext.Provider>
    );

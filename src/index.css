@@ -1,0 +1,17 @@
+nav a.active {
+   font-weight: bold;
+   color: rgb(239, 163, 29);
+   text-decoration: underline;
+}
+nav a {
+   color: white;
+   text-decoration: none;
+}
+
+nav a:hover {
+   color: rgb(239, 163, 29);
+}
+
+.td-center {
+   text-align: center;
+}
