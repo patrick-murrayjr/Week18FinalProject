@@ -3,16 +3,17 @@ import { Container, Row, Col, Table } from 'react-bootstrap';
 import { useContext } from 'react';
 import { ShopContext } from './ShopContext';
 import QtyButton from './QtyButton';
+import CartForm from './CartForm';
 
 function Cart() {
    const { cartItems, cartItemsCount, products } = useContext(ShopContext);
    // console.log(cartItemsCount);
 
    return (
-      <Container fluid='lg' className='mb-5 p-5'>
+      <Container fluid='lg' className='mb-1 p-1'>
          <Row>
             <Col>
-               <div>Cart Form</div>
+               <CartForm />
                {cartItemsCount === 0 && (
                   <h5 className='text-center fst-italic text-danger mt-3'>
                      Your cart is empty
@@ -21,7 +22,11 @@ function Cart() {
                {cartItemsCount > 0 && (
                   <>
                      <h4 className='text-center'>Your Cart</h4>
-                     <Table striped bordered hover>
+                     <Table
+                        striped
+                        bordered
+                        hover
+                        className='rounded border border-2 p-4 shadow-sm'>
                         <thead>
                            <tr>
                               <th>Item</th>
