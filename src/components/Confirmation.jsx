@@ -9,20 +9,28 @@ function Confirmation() {
    console.log(orderDetails);
    return (
       <Container fluid='lg' className='mb-1 p-1'>
-         <h3 className='text-center mb-4'>Your order has been placed successfully.</h3>
+         <Row className='mt-2'>
+            <Col sm={12} md={8}>
+               <h4 className='text-center mb-4'>
+                  Your Order has been placed successfully.
+               </h4>
+            </Col>
+            <Col sm={12} md={4}>
+               <div className='d-flex justify-content-center mb-3'>
+                  <Button
+                     variant='warning'
+                     className='rounded mx-auto text-center'
+                     onClick={() => navigate('/')}>
+                     Continue Shopping
+                  </Button>
+               </div>
+            </Col>
+         </Row>
          <Row>
             <Col>
                <Row>
-                  <Col md={8}>
+                  <Col>
                      <h4 className='text-center'>Shipping Details</h4>
-                  </Col>
-                  <Col md={4}>
-                     <Button
-                        variant='warning'
-                        className='rounded m-2'
-                        onClick={() => navigate('/')}>
-                        Continue Shopping
-                     </Button>
                   </Col>
                </Row>
                <Row className='border border-2 rounded p-4 shadow-sm'>

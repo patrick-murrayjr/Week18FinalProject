@@ -43,11 +43,11 @@ function CartForm() {
       if (
          firstName &&
          lastName &&
-         validPhoneNumber(phoneNumber) &&
+         phoneNumber &&
          validEmail(email) &&
          address &&
          city &&
-         validZipCode(zipCode)
+         zipCode
       ) {
          return true;
       }
@@ -57,16 +57,6 @@ function CartForm() {
    const validEmail = email => {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       return emailRegex.test(email);
-   };
-
-   const validPhoneNumber = phoneNumber => {
-      const phoneRegex = /^\d{7}(\d{3}|\d{4})?$/;
-      return phoneRegex.test(phoneNumber);
-   };
-
-   const validZipCode = zipCode => {
-      const zipRegex = /^\d{5}$/;
-      return zipRegex.test(zipCode);
    };
 
    const resetForm = () => {
@@ -132,7 +122,7 @@ function CartForm() {
                      <Form.Group className='mb-3' controlId='formPhoneNumber'>
                         {phoneNumber === '' ? (
                            <Form.Label className='text-danger'>
-                              Phone Number is Required
+                              Phone Number is required
                            </Form.Label>
                         ) : (
                            <Form.Label>Phone Number</Form.Label>
@@ -150,9 +140,9 @@ function CartForm() {
                   </Col>
                   <Col xs={12} md={6}>
                      <Form.Group className='mb-3' controlId='formEmail'>
-                        {email === '' ? (
+                        {!validEmail(email) ? (
                            <Form.Label className='text-danger'>
-                              Email is Required
+                              Email must be in the format name@domain.com
                            </Form.Label>
                         ) : (
                            <Form.Label>Email</Form.Label>
@@ -213,7 +203,7 @@ function CartForm() {
                      <Form.Group className='mb-3' controlId='formZipCode'>
                         {zipCode === '' ? (
                            <Form.Label className='text-danger'>
-                              Zip is Required
+                              Zip is required
                            </Form.Label>
                         ) : (
                            <Form.Label>Zip Code</Form.Label>

@@ -31,7 +31,8 @@ function ProductInfo(props) {
             </p>
             <p>
                <span className='fw-bold fs-5'>Category: </span>
-               {props.selectedproduct.category}
+               {props.selectedproduct.category &&
+                  props.selectedproduct.category.toUpperCase()}
             </p>
             <p>
                <span className='fw-bold fs-5'>Item Details: </span>

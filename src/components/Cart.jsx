@@ -26,7 +26,7 @@ function Cart() {
                         striped
                         bordered
                         hover
-                        className='rounded border border-2 p-4 shadow-sm'>
+                        className='rounded border border-2 p-4 mb-4 shadow-sm'>
                         <thead>
                            <tr>
                               <th>Item</th>
