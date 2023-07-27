@@ -1,10 +1,12 @@
 import { useState, useContext } from 'react';
 import { ShopContext } from './ShopContext';
 import { Container, Form, Button, Col, Row } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 
 function CartForm() {
-   const [validated, setValidated] = useState(false);
-   const { cartItems, cartItemsCount, products } = useContext(ShopContext);
+   const { cartItems, cartItemsCount, clearCart, orderDetails, setOrderDetails } =
+      useContext(ShopContext);
+
    const [firstName, setFirstName] = useState('');
    const [lastName, setLastName] = useState('');
    const [phoneNumber, setPhoneNumber] = useState('');
@@ -14,29 +16,68 @@ function CartForm() {
    const [zipCode, setZipCode] = useState('');
 
    const handleSubmit = event => {
-      handleValidation(event);
       console.log('Button clicked');
       event.preventDefault();
-      console.log(
-         firstName,
-         lastName,
-         phoneNumber,
-         email,
-         address,
-         city,
-         zipCode,
-         cartItemsCount
-      );
-   };
-   const handleValidation = event => {
-      const form = event.currentTarget;
-      if (form.checkValidity() === false) {
-         event.preventDefault();
-         event.stopPropagation();
-      }
-      setValidated(true);
+      let newOrder = {
+         firstName: firstName,
+         lastName: lastName,
+         phoneNumber: phoneNumber,
+         email: email,
+         address: address,
+         city: city,
+         zipCode: zipCode,
+         items: cartItems,
+      };
+      setOrderDetails(newOrder);
+      clearCart();
+      resetForm();
+      navigate('/Confirmation');
    };
 
+   const navigate = useNavigate();
+
+   // const printOrderDetails = order => {
+   //    console.log(order);
+   // };
+   const validForm = () => {
+      if (
+         firstName &&
+         lastName &&
+         validPhoneNumber(phoneNumber) &&
+         validEmail(email) &&
+         address &&
+         city &&
+         validZipCode(zipCode)
+      ) {
+         return true;
+      }
+      return false;
+   };
+
+   const validEmail = email => {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return emailRegex.test(email);
+   };
+
+   const validPhoneNumber = phoneNumber => {
+      const phoneRegex = /^\d{7}(\d{3}|\d{4})?$/;
+      return phoneRegex.test(phoneNumber);
+   };
+
+   const validZipCode = zipCode => {
+      const zipRegex = /^\d{5}$/;
+      return zipRegex.test(zipCode);
+   };
+
+   const resetForm = () => {
+      setFirstName('');
+      setLastName('');
+      setPhoneNumber('');
+      setEmail('');
+      setAddress('');
+      setCity('');
+      setZipCode('');
+   };
    return (
       <Container fluid='lg' className='my-3 '>
          <Col>
@@ -191,14 +232,7 @@ function CartForm() {
                <Row>
                   <Col xs={12} md={12}>
                      <Row className='mx-1 my-2'>
-                        {(cartItemsCount === 0 ||
-                           !firstName ||
-                           !lastName ||
-                           !phoneNumber ||
-                           !email ||
-                           !address ||
-                           !city ||
-                           !zipCode) && (
+                        {(cartItemsCount === 0 || !validForm()) && (
                            <Button
                               className='rounded text-center'
                               variant='warning'
@@ -207,22 +241,15 @@ function CartForm() {
                               Complete Purchase
                            </Button>
                         )}
-                        {cartItemsCount > 0 &&
-                           firstName &&
-                           lastName &&
-                           phoneNumber &&
-                           email &&
-                           address &&
-                           city &&
-                           zipCode && (
-                              <Button
-                                 className='rounded text-center'
-                                 variant='warning'
-                                 type='button'
-                                 onClick={handleSubmit}>
-                                 Complete Purchase
-                              </Button>
-                           )}
+                        {cartItemsCount > 0 && validForm() && (
+                           <Button
+                              className='rounded text-center'
+                              variant='warning'
+                              type='button'
+                              onClick={handleSubmit}>
+                              Complete Purchase
+                           </Button>
+                        )}
                      </Row>
                   </Col>
                </Row>

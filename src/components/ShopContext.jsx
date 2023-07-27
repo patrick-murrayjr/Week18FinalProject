@@ -5,8 +5,10 @@ export const ShopContext = createContext(null);
 
 const ShopContextProvider = props => {
    const PRODUCTS_URL = 'https://fakestoreapi.com/products';
+   const ORDERS_URL = 'https://fakestoreapi.com/orders';
    const [products, setProducts] = useState([]);
    const [cartItems, setCartItems] = useState({});
+   const [orderDetails, setOrderDetails] = useState({ items: {} });
 
    useEffect(() => {
       const fetchProducts = async () => {
@@ -35,6 +37,7 @@ const ShopContextProvider = props => {
          return { ...prevState, [id]: prevState[id] + qty };
       });
    };
+
    const addItemToCart = id => {
       setCartItems(prevState => {
          return { ...prevState, [id]: prevState[id] + 1 };
@@ -70,6 +73,8 @@ const ShopContextProvider = props => {
       clearItem,
       cartItemsCount,
       products,
+      orderDetails,
+      setOrderDetails,
    };
 
    // console.log(cartItems);
