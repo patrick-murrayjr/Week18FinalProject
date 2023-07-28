@@ -5,10 +5,11 @@ export const ShopContext = createContext(null);
 
 const ShopContextProvider = props => {
    const PRODUCTS_URL = 'https://fakestoreapi.com/products';
-   const ORDERS_URL = 'https://fakestoreapi.com/orders';
+   const ORDERS_URL = 'https://64c3f4ef67cfdca3b6608237.mockapi.io/myStore/orders';
    const [products, setProducts] = useState([]);
    const [cartItems, setCartItems] = useState({});
    const [orderDetails, setOrderDetails] = useState({ items: {} });
+   const [orders, setOrders] = useState([]);
 
    useEffect(() => {
       const fetchProducts = async () => {
@@ -22,6 +23,20 @@ const ShopContextProvider = props => {
          }
       };
       fetchProducts();
+   }, []);
+
+   useEffect(() => {
+      const fetchOrders = async () => {
+         try {
+            const response = await fetch(ORDERS_URL);
+            const data = await response.json();
+            // console.log(data);
+            setOrders(data);
+         } catch (error) {
+            console.log(error);
+         }
+      };
+      fetchOrders();
    }, []);
 
    const initializeCart = products => {
@@ -75,6 +90,8 @@ const ShopContextProvider = props => {
       products,
       orderDetails,
       setOrderDetails,
+      orders,
+      setOrders,
    };
 
    // console.log(cartItems);

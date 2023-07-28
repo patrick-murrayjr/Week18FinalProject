@@ -6,24 +6,14 @@ import { useNavigate } from 'react-router-dom';
 function Confirmation() {
    const { products, orderDetails } = useContext(ShopContext);
    const navigate = useNavigate();
-   console.log(orderDetails);
+   // console.log(orderDetails);
    return (
       <Container fluid='lg' className='mb-1 p-1'>
          <Row className='mt-2'>
-            <Col sm={12} md={8}>
-               <h4 className='text-center mb-4'>
-                  Your Order has been placed successfully.
+            <Col>
+               <h4 className='text-center mb-4 text-warning'>
+                  Your order has been placed successfully.
                </h4>
-            </Col>
-            <Col sm={12} md={4}>
-               <div className='d-flex justify-content-center mb-3'>
-                  <Button
-                     variant='warning'
-                     className='rounded mx-auto text-center'
-                     onClick={() => navigate('/')}>
-                     Continue Shopping
-                  </Button>
-               </div>
             </Col>
          </Row>
          <Row>
@@ -33,7 +23,15 @@ function Confirmation() {
                      <h4 className='text-center'>Shipping Details</h4>
                   </Col>
                </Row>
-               <Row className='border border-2 rounded p-4 shadow-sm'>
+               <Row className='border border-2 rounded p-3 mx-3 shadow-sm'>
+                  <div className='d-flex justify-content-center mb-2'>
+                     <Button
+                        variant='warning'
+                        className='rounded mx-auto text-center'
+                        onClick={() => navigate('/')}>
+                        Continue Shopping
+                     </Button>
+                  </div>
                   <p className='fw-lighter'>
                      <span className='fw-bold'>Name: </span>
                      {`${orderDetails.firstName} ${orderDetails.lastName}`}
@@ -53,8 +51,7 @@ function Confirmation() {
                </Row>
             </Col>
          </Row>
-
-         <Row>
+         <Row className='mx-1'>
             <Col>
                <h4 className='text-center mt-3'>Your Order</h4>
                <Table
