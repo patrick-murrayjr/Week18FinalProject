@@ -4,8 +4,9 @@ import { useContext } from 'react';
 import { ShopContext } from './ShopContext';
 
 function Orders() {
-   const { orders, products } = useContext(ShopContext);
-
+   const { orders, products, refreshData } = useContext(ShopContext);
+   console.log(orders);
+   console.log(refreshData);
    return (
       <Container fluid='lg' className='mb-5 p-5'>
          <Row>
@@ -104,7 +105,7 @@ function Orders() {
                                  </td>
                                  <td>
                                     <div className='d-flex align-items-stretch fw-bold'>
-                                       ${order.totalPrice.toFixed(2)}
+                                       ${Number(order.totalPrice).toFixed(2)}
                                     </div>
                                  </td>
                                  <td className='td-center'>

@@ -4,8 +4,16 @@ import { Container, Form, Button, Col, Row } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
 function CartForm() {
-   const { cartItems, cartItemsCount, clearCart, setOrderDetails, products } =
-      useContext(ShopContext);
+   const {
+      cartItems,
+      cartItemsCount,
+      clearCart,
+      setOrderDetails,
+      products,
+      createNewOrder,
+      setRefreshData,
+      refreshData,
+   } = useContext(ShopContext);
 
    const [firstName, setFirstName] = useState('');
    const [lastName, setLastName] = useState('');
@@ -26,7 +34,7 @@ function CartForm() {
          address: address,
          city: city,
          zipCode: zipCode,
-         items: cartItems,
+         cartItems: cartItems,
          totalPrice: Object.keys(cartItems)
             .reduce((acc, id) => {
                return (
@@ -39,10 +47,14 @@ function CartForm() {
             .toFixed(2),
       };
 
-      console.log(newOrder);
+      // console.log(newOrder);
+      createNewOrder(newOrder);
       // console.table(newOrder.items);
       setOrderDetails(newOrder);
       clearCart();
+      console.log(refreshData);
+      setRefreshData(!refreshData);
+      console.log(refreshData);
       resetForm();
       navigate('/Confirmation');
    };

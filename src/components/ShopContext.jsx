@@ -12,6 +12,7 @@ const ShopContextProvider = props => {
    const [orderDetails, setOrderDetails] = useState({ items: {} });
    const [orders, setOrders] = useState([]);
    const [fetchError, setFetchError] = useState(null);
+   const [refreshData, setRefreshData] = useState(false);
 
    useEffect(() => {
       const fetchProducts = async () => {
@@ -39,12 +40,12 @@ const ShopContextProvider = props => {
          }
       };
       fetchOrders();
-   }, []);
+   }, [refreshData]);
 
    /***
     * SECTION: CRUD Operations
     */
-   // This code uses the fetch API to  add a new blog post to the API.
+   // This code uses the fetch API to  add a new order to the API.
    const createNewOrder = async order => {
       setOrders([...orders, order]);
       const postOptions = {
@@ -60,7 +61,7 @@ const ShopContextProvider = props => {
       }
    };
 
-   // This code uses the fetch API to edit a blog post in the API.
+   // This code uses the fetch API to edit the order in the API.
    const editOrder = async order => {
       console.log(order.id);
       const putOptions = {
@@ -78,7 +79,7 @@ const ShopContextProvider = props => {
       setOrders(newOrder);
    };
 
-   // This code uses the fetch API to delete a blog post from the API.
+   // This code uses the fetch API to delete an order from the API.
    const deleteOrder = async id => {
       const deleteOptions = {
          method: 'DELETE',
@@ -147,6 +148,8 @@ const ShopContextProvider = props => {
       createNewOrder,
       editOrder,
       deleteOrder,
+      refreshData,
+      setRefreshData,
    };
 
    // console.log(cartItems);

@@ -4,9 +4,11 @@ import { ShopContext } from './ShopContext';
 import { useNavigate } from 'react-router-dom';
 
 function Confirmation() {
-   const { products, orderDetails } = useContext(ShopContext);
+   const { products, orderDetails, refreshData, setRefreshData } =
+      useContext(ShopContext);
    const navigate = useNavigate();
    // console.log(orderDetails);
+   console.log(refreshData);
    return (
       <Container fluid='lg' className='mb-1 p-1'>
          <Row className='mt-2'>
@@ -68,10 +70,10 @@ function Confirmation() {
                   </thead>
                   <tbody>
                      {orderDetails &&
-                        Object.keys(orderDetails.items).map(id => {
+                        Object.keys(orderDetails.cartItems).map(id => {
                            id > 0;
                            return (
-                              orderDetails.items[id] > 0 && (
+                              orderDetails.cartItems[id] > 0 && (
                                  <tr key={id}>
                                     <td>
                                        <span className='fw-lighter'>
@@ -79,7 +81,7 @@ function Confirmation() {
                                        </span>
                                     </td>
                                     <td className='d-flex justify-content-center'>
-                                       {orderDetails.items[id]}
+                                       {orderDetails.cartItems[id]}
                                     </td>
                                     <td className='td-center'>
                                        ${products[id - 1].price.toFixed(2)}
@@ -91,18 +93,18 @@ function Confirmation() {
                      <tr>
                         <td className='fw-bold'>Total</td>
                         <td className='td-center fw-bold '>
-                           {Object.keys(orderDetails.items).reduce((acc, id) => {
-                              return acc + orderDetails.items[id];
+                           {Object.keys(orderDetails.cartItems).reduce((acc, id) => {
+                              return acc + orderDetails.cartItems[id];
                            }, 0)}
                         </td>
                         <td className='td-center fw-bold'>
                            $
                            {orderDetails &&
-                              Object.keys(orderDetails.items)
+                              Object.keys(orderDetails.cartItems)
                                  .reduce((acc, id) => {
                                     return (
                                        acc +
-                                       orderDetails.items[id] * products[id - 1].price
+                                       orderDetails.cartItems[id] * products[id - 1].price
                                     );
                                  }, 0)
                                  .toFixed(2)}
