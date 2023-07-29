@@ -12,7 +12,6 @@ const ShopContextProvider = props => {
    const [orderDetails, setOrderDetails] = useState({ items: {} });
    const [orders, setOrders] = useState([]);
    const [fetchError, setFetchError] = useState(null);
-   const [refreshData, setRefreshData] = useState(false);
 
    useEffect(() => {
       const fetchProducts = async () => {
@@ -28,19 +27,20 @@ const ShopContextProvider = props => {
       fetchProducts();
    }, []);
 
+   const fetchOrders = async () => {
+      try {
+         const response = await fetch(ORDERS_URL);
+         const data = await response.json();
+         // console.log(data);
+         setOrders(data);
+      } catch (error) {
+         console.log(error);
+      }
+   };
+
    useEffect(() => {
-      const fetchOrders = async () => {
-         try {
-            const response = await fetch(ORDERS_URL);
-            const data = await response.json();
-            // console.log(data);
-            setOrders(data);
-         } catch (error) {
-            console.log(error);
-         }
-      };
       fetchOrders();
-   }, [refreshData]);
+   }, []);
 
    /***
     * SECTION: CRUD Operations
@@ -59,6 +59,7 @@ const ShopContextProvider = props => {
       if (result) {
          setFetchError(result);
       }
+      fetchOrders();
    };
 
    // This code uses the fetch API to edit the order in the API.
@@ -77,6 +78,7 @@ const ShopContextProvider = props => {
       }
       const newOrder = orders.map(item => (item.id === order.id ? order : item));
       setOrders(newOrder);
+      fetchOrders();
    };
 
    // This code uses the fetch API to delete an order from the API.
@@ -90,6 +92,7 @@ const ShopContextProvider = props => {
       }
       const newOrders = orders.filter(order => order.id !== id);
       setOrders(newOrders);
+      fetchOrders();
    };
 
    const initializeCart = products => {
@@ -148,8 +151,6 @@ const ShopContextProvider = props => {
       createNewOrder,
       editOrder,
       deleteOrder,
-      refreshData,
-      setRefreshData,
    };
 
    // console.log(cartItems);

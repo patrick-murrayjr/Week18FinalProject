@@ -4,11 +4,8 @@ import { ShopContext } from './ShopContext';
 import { useNavigate } from 'react-router-dom';
 
 function Confirmation() {
-   const { products, orderDetails, refreshData, setRefreshData } =
-      useContext(ShopContext);
+   const { products, orderDetails } = useContext(ShopContext);
    const navigate = useNavigate();
-   // console.log(orderDetails);
-   console.log(refreshData);
    return (
       <Container fluid='lg' className='mb-1 p-1'>
          <Row className='mt-2'>

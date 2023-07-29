@@ -52,9 +52,6 @@ function CartForm() {
       // console.table(newOrder.items);
       setOrderDetails(newOrder);
       clearCart();
-      console.log(refreshData);
-      setRefreshData(!refreshData);
-      console.log(refreshData);
       resetForm();
       navigate('/Confirmation');
    };

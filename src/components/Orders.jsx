@@ -1,12 +1,17 @@
 /* eslint-disable react/prop-types */
 import { Container, Row, Col, Table, Button } from 'react-bootstrap';
-import { useContext } from 'react';
+import { useContext, useRef } from 'react';
 import { ShopContext } from './ShopContext';
+import ScrollButton from './ScrollButton';
 
 function Orders() {
-   const { orders, products, refreshData } = useContext(ShopContext);
-   console.log(orders);
-   console.log(refreshData);
+   const { orders, products, editOrder, deleteOrder } = useContext(ShopContext);
+   // console.log(orders.length);
+
+   const buttonRef = useRef(null);
+   const handleDelete = async id => {
+      await deleteOrder(id);
+   };
    return (
       <Container fluid='lg' className='mb-5 p-5'>
          <Row>
@@ -131,6 +136,7 @@ function Orders() {
                                                 'Delete button clicked, order id: ',
                                                 order.id
                                              );
+                                             handleDelete(order.id);
                                           }}>
                                           Delete
                                        </Button>
@@ -144,6 +150,7 @@ function Orders() {
                </Col>
             </Row>
          )}
+         <ScrollButton buttonRef={buttonRef} />
       </Container>
    );
 }
