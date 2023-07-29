@@ -1,13 +1,14 @@
 /* eslint-disable react/prop-types */
 import { Container, Row, Col, Table } from 'react-bootstrap';
-import { useContext } from 'react';
+import { useContext, useRef } from 'react';
 import { ShopContext } from './ShopContext';
 import QtyButton from './QtyButton';
 import CartForm from './CartForm';
+import ScrollButton from './ScrollButton';
 
 function Cart() {
    const { cartItems, cartItemsCount, products } = useContext(ShopContext);
-   // console.log(cartItemsCount);
+   const buttonRef = useRef(null);
 
    return (
       <Container fluid='lg' className='mb-1 p-1'>
@@ -79,6 +80,7 @@ function Cart() {
                )}
             </Col>
          </Row>
+         <ScrollButton buttonRef={buttonRef} />
       </Container>
    );
 }
