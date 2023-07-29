@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
 import { createContext, useState, useEffect } from 'react';
+import apiRequest from './apiRequest';
 export const ShopContext = createContext(null);
 
 const ShopContextProvider = props => {
@@ -10,6 +11,7 @@ const ShopContextProvider = props => {
    const [cartItems, setCartItems] = useState({});
    const [orderDetails, setOrderDetails] = useState({ items: {} });
    const [orders, setOrders] = useState([]);
+   const [fetchError, setFetchError] = useState(null);
 
    useEffect(() => {
       const fetchProducts = async () => {
@@ -38,6 +40,56 @@ const ShopContextProvider = props => {
       };
       fetchOrders();
    }, []);
+
+   /***
+    * SECTION: CRUD Operations
+    */
+   // This code uses the fetch API to  add a new blog post to the API.
+   const createNewOrder = async order => {
+      setOrders([...orders, order]);
+      const postOptions = {
+         method: 'POST',
+         headers: {
+            'Content-Type': 'application/json',
+         },
+         body: JSON.stringify(order),
+      };
+      const result = await apiRequest(ORDERS_URL, postOptions);
+      if (result) {
+         setFetchError(result);
+      }
+   };
+
+   // This code uses the fetch API to edit a blog post in the API.
+   const editOrder = async order => {
+      console.log(order.id);
+      const putOptions = {
+         method: 'PUT',
+         headers: {
+            'Content-Type': 'application/json',
+         },
+         body: JSON.stringify(order),
+      };
+      const result = await apiRequest(`${ORDERS_URL}/${order.id}`, putOptions);
+      if (result) {
+         setFetchError(result);
+      }
+      const newOrder = orders.map(item => (item.id === order.id ? order : item));
+      setOrders(newOrder);
+   };
+
+   // This code uses the fetch API to delete a blog post from the API.
+   const deleteOrder = async id => {
+      const deleteOptions = {
+         method: 'DELETE',
+      };
+      const result = await apiRequest(`${ORDERS_URL}/${id}`, deleteOptions);
+      if (result) {
+         setFetchError(result);
+      }
+      const newOrders = orders.filter(order => order.id !== id);
+      setOrders(newOrders);
+   };
 
    const initializeCart = products => {
       let cart = {};
@@ -92,6 +144,9 @@ const ShopContextProvider = props => {
       setOrderDetails,
       orders,
       setOrders,
+      createNewOrder,
+      editOrder,
+      deleteOrder,
    };
 
    // console.log(cartItems);

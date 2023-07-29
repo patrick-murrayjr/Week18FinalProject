@@ -16,7 +16,7 @@ function CartForm() {
    const [zipCode, setZipCode] = useState('');
 
    const handleSubmit = event => {
-      console.log('Button clicked');
+      // console.log('Button clicked');
       event.preventDefault();
       let newOrder = {
          firstName: firstName,
@@ -38,7 +38,9 @@ function CartForm() {
             }, 0)
             .toFixed(2),
       };
+
       console.log(newOrder);
+      // console.table(newOrder.items);
       setOrderDetails(newOrder);
       clearCart();
       resetForm();
@@ -47,12 +49,12 @@ function CartForm() {
 
    const navigate = useNavigate();
 
-   const validForm = () => {
+   const isValidForm = () => {
       if (
          firstName &&
          lastName &&
          phoneNumber &&
-         validEmail(email) &&
+         isValidEmail(email) &&
          address &&
          city &&
          zipCode
@@ -62,7 +64,7 @@ function CartForm() {
       return false;
    };
 
-   const validEmail = email => {
+   const isValidEmail = email => {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       return emailRegex.test(email);
    };
@@ -148,7 +150,7 @@ function CartForm() {
                   </Col>
                   <Col xs={12} md={6}>
                      <Form.Group className='mb-3' controlId='formEmail'>
-                        {!validEmail(email) ? (
+                        {!isValidEmail(email) ? (
                            <Form.Label className='text-danger'>
                               Email must be in the format name@domain.com
                            </Form.Label>
@@ -230,7 +232,7 @@ function CartForm() {
                <Row>
                   <Col xs={12} md={12}>
                      <Row className='mx-1 my-2'>
-                        {(cartItemsCount === 0 || !validForm()) && (
+                        {(cartItemsCount === 0 || !isValidForm()) && (
                            <Button
                               className='rounded text-center'
                               variant='warning'
@@ -239,7 +241,7 @@ function CartForm() {
                               Complete Purchase
                            </Button>
                         )}
-                        {cartItemsCount > 0 && validForm() && (
+                        {cartItemsCount > 0 && isValidForm() && (
                            <Button
                               className='rounded text-center'
                               variant='warning'

@@ -108,7 +108,7 @@ function Shop() {
             variant='info'
             className='p-0 mx-text-center border-0'
             onClick={() => {
-               document.body.scrollTop = 0;
+               // document.body.scrollTop = 0;
                setScrollTop(0);
                document.documentElement.scrollTop = 0;
             }}

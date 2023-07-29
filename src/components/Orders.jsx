@@ -4,19 +4,8 @@ import { useContext } from 'react';
 import { ShopContext } from './ShopContext';
 
 function Orders() {
-   const {
-      orders,
-      products,
-      setOrders,
-      cartItems,
-      cartItemsCount,
-      clearCart,
-      setOrderDetails,
-   } = useContext(ShopContext);
-   console.log(products);
-   // console.log(orders);
-   // console.log(orders.length);
-   // console.log(orders.cartItems);
+   const { orders, products } = useContext(ShopContext);
+
    return (
       <Container fluid='lg' className='mb-5 p-5'>
          <Row>
@@ -31,7 +20,7 @@ function Orders() {
                There are no orders to display
             </h5>
          )}
-         {orders.length > 0 && (
+         {orders.length > 0 && products.length > 0 && (
             <Row>
                <Col>
                   <Table
@@ -72,7 +61,6 @@ function Orders() {
                                     </p>
                                  </td>
                                  <td className='td-center'>
-                                    TEMP
                                     <Table
                                        striped
                                        bordered
@@ -80,7 +68,9 @@ function Orders() {
                                        className='rounded border border-2 p-4 mb-4 shadow-sm'>
                                        <thead>
                                           <tr>
-                                             <th>Item</th>
+                                             <th className='d-flex justify-content-start ps-2'>
+                                                Item
+                                             </th>
                                              <th className='td-center'>Qty</th>
                                              <th className='td-center'>Price</th>
                                           </tr>
@@ -91,64 +81,56 @@ function Orders() {
                                              return (
                                                 order.cartItems[id] > 0 && (
                                                    <tr key={id}>
-                                                      <td>
-                                                         <span className='fw-lighter'>
-                                                            {products[order[id] - 1]}
+                                                      <td className='fw-lighter'>
+                                                         <span className='d-flex justify-content-start'>
+                                                            {products[id - 1].title}
                                                          </span>
                                                       </td>
-                                                      <td className='d-flex justify-content-center'>
+                                                      <td className='td-center'>
                                                          {order.cartItems[id]}
                                                       </td>
                                                       <td className='td-center'>
-                                                         $ TEMP
+                                                         $
+                                                         {products[id - 1].price.toFixed(
+                                                            2
+                                                         )}
                                                       </td>
                                                    </tr>
                                                 )
                                              );
                                           })}
-                                          {/*
-                                          <tr>
-                                             <td className='fw-bold'>Total</td>
-                                             <td className='td-center fw-bold '>
-                                                {Object.keys(order.items).reduce(
-                                                   (acc, id) => {
-                                                      return acc + order.items[id];
-                                                   },
-                                                   0
-                                                )}
-                                             </td>
-                                             <td className='td-center fw-bold'>
-                                                $
-                                                {Object.keys(order.items)
-
-                                                   .reduce((acc, id) => {
-                                                      return (
-                                                         acc +
-                                                         order.items[id] *
-                                                            order.products[id - 1].price
-                                                      );
-                                                   }, 0)
-                                                   .toFixed(2)}
-                                             </td>
-                                                </tr>*/}
                                        </tbody>
                                     </Table>
                                  </td>
-                                 <td className='td-center'>
-                                    ${order.totalPrice.toFixed(2)}
+                                 <td>
+                                    <div className='d-flex align-items-stretch fw-bold'>
+                                       ${order.totalPrice.toFixed(2)}
+                                    </div>
                                  </td>
                                  <td className='td-center'>
                                     <div className='vstack gap-2'>
                                        <Button
                                           className='btn-sm rounded text-center'
                                           variant='warning'
-                                          type='button'>
+                                          type='button'
+                                          onClick={() => {
+                                             console.log(
+                                                'Edit button clicked, order id: ',
+                                                order.id
+                                             );
+                                          }}>
                                           Edit
                                        </Button>
                                        <Button
                                           className='btn-sm rounded text-center'
                                           variant='danger'
-                                          type='button'>
+                                          type='button'
+                                          onClick={() => {
+                                             console.log(
+                                                'Delete button clicked, order id: ',
+                                                order.id
+                                             );
+                                          }}>
                                           Delete
                                        </Button>
                                     </div>
