@@ -54,12 +54,12 @@ function Orders() {
          )}
          {orders.length > 0 && products.length > 0 && (
             <Row>
-               <Col>
+               <Col className='table-responsive'>
                   <Table
                      striped
                      bordered
                      hover
-                     className='rounded border border-2 p-4 mb-4 shadow-sm'>
+                     className='rounded border border-2 p-4 mb-4 shadow-sm table-responsive'>
                      <thead>
                         <tr>
                            <th className='td-center'>Order ID</th>
