@@ -1,9 +1,10 @@
+/* eslint-disable react/prop-types */
 import { useState, useContext } from 'react';
 import { ShopContext } from './ShopContext';
 import { Container, Form, Button, Col, Row } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
-function CartForm() {
+function CartForm({ form }) {
    const {
       cartItems,
       cartItemsCount,
@@ -11,20 +12,34 @@ function CartForm() {
       setOrderDetails,
       products,
       createNewOrder,
-      setRefreshData,
-      refreshData,
+      idToEdit,
+      editOrder,
+      orders,
    } = useContext(ShopContext);
 
-   const [firstName, setFirstName] = useState('');
-   const [lastName, setLastName] = useState('');
-   const [phoneNumber, setPhoneNumber] = useState('');
-   const [email, setEmail] = useState('');
-   const [address, setAddress] = useState('');
-   const [city, setCity] = useState('');
-   const [zipCode, setZipCode] = useState('');
+   const [orderToEdit] = orders.filter(order => order.id === idToEdit);
+   const {
+      firstName: firstNameToEdit,
+      lastName: lastNameToEdit,
+      phoneNumber: phoneNumberToEdit,
+      email: emailToEdit,
+      address: addressToEdit,
+      city: cityToEdit,
+      zipCode: zipCodeToEdit,
+   } = orderToEdit || {};
+   const [firstName, setFirstName] = useState(
+      form === 'editOrder' ? firstNameToEdit : ''
+   );
+   const [lastName, setLastName] = useState(form === 'editOrder' ? lastNameToEdit : '');
+   const [phoneNumber, setPhoneNumber] = useState(
+      form === 'editOrder' ? phoneNumberToEdit : ''
+   );
+   const [email, setEmail] = useState(form === 'editOrder' ? emailToEdit : '');
+   const [address, setAddress] = useState(form === 'editOrder' ? addressToEdit : '');
+   const [city, setCity] = useState(form === 'editOrder' ? cityToEdit : '');
+   const [zipCode, setZipCode] = useState(form === 'editOrder' ? zipCodeToEdit : '');
 
    const handleSubmit = event => {
-      // console.log('Button clicked');
       event.preventDefault();
       let newOrder = {
          firstName: firstName,
@@ -47,13 +62,18 @@ function CartForm() {
             .toFixed(2),
       };
 
-      // console.log(newOrder);
-      createNewOrder(newOrder);
-      // console.table(newOrder.items);
+      if (form === 'editOrder') {
+         editOrder(newOrder, idToEdit);
+      }
+      if (form === 'newOrder') {
+         createNewOrder(newOrder);
+      }
+
       setOrderDetails(newOrder);
       clearCart();
       resetForm();
-      navigate('/Confirmation');
+      form === 'newOrder' && navigate('/Confirmation');
+      form === 'editOrder' && navigate('/Orders');
    };
 
    const navigate = useNavigate();
@@ -93,7 +113,14 @@ function CartForm() {
             <Form className='rounded border border-2 p-4 shadow-sm'>
                <Row>
                   <Col xs={12} md={12}>
-                     <h4 className='text-center mb-3'>Shipping Information</h4>
+                     {form === 'newOrder' && (
+                        <h4 className='text-center mb-3'>Shipping Information</h4>
+                     )}
+                     {form === 'editOrder' && (
+                        <h4 className='text-center mb-3'>
+                           Edit information for Order ID: {idToEdit}
+                        </h4>
+                     )}
                   </Col>
                </Row>
                <Row>
@@ -247,7 +274,8 @@ function CartForm() {
                               variant='warning'
                               type='button'
                               disabled={true}>
-                              Complete Purchase
+                              {form === 'newOrder' && <>Complete Purchase</>}
+                              {form === 'editOrder' && <>Save Changes</>}
                            </Button>
                         )}
                         {cartItemsCount > 0 && isValidForm() && (
@@ -256,7 +284,8 @@ function CartForm() {
                               variant='warning'
                               type='button'
                               onClick={handleSubmit}>
-                              Complete Purchase
+                              {form === 'newOrder' && <>Complete Purchase</>}
+                              {form === 'editOrder' && <>Save Changes</>}
                            </Button>
                         )}
                      </Row>

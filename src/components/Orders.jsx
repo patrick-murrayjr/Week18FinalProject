@@ -1,17 +1,43 @@
 /* eslint-disable react/prop-types */
-import { Container, Row, Col, Table, Button } from 'react-bootstrap';
-import { useContext, useRef } from 'react';
+import { Container, Row, Col, Table, Button, Modal } from 'react-bootstrap';
+import { useContext, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ShopContext } from './ShopContext';
 import ScrollButton from './ScrollButton';
 
 function Orders() {
-   const { orders, products, editOrder, deleteOrder } = useContext(ShopContext);
-   // console.log(orders.length);
-
+   const {
+      orders,
+      products,
+      deleteOrder,
+      setIdToEdit,
+      addQtyToCart,
+      clearCart,
+      cartItems,
+   } = useContext(ShopContext);
+   const [showDeleteModal, setShowDeleteModal] = useState(false);
+   const [idToDelete, setIdToDelete] = useState(0);
+   const handleDeleteModalClose = () => setShowDeleteModal(false);
+   const handleDeleteModalShow = id => {
+      setIdToDelete(id);
+      setShowDeleteModal(true);
+   };
+   const navigate = useNavigate();
    const buttonRef = useRef(null);
    const handleDelete = async id => {
       await deleteOrder(id);
    };
+   const countCartItems = () => {
+      let count = 0;
+      Object.values(cartItems).forEach(qty => {
+         count += qty;
+      });
+      return count;
+   };
+   if (countCartItems() > 0) {
+      clearCart();
+   }
+
    return (
       <Container fluid='lg' className='mb-5 p-5'>
          <Row>
@@ -120,10 +146,13 @@ function Orders() {
                                           variant='warning'
                                           type='button'
                                           onClick={() => {
-                                             console.log(
-                                                'Edit button clicked, order id: ',
-                                                order.id
-                                             );
+                                             clearCart();
+                                             setIdToEdit(order.id);
+                                             let tmp = Object.values(order.cartItems);
+                                             tmp.forEach((qty, id) => {
+                                                addQtyToCart(id + 1, qty);
+                                             });
+                                             navigate('/editOrder');
                                           }}>
                                           Edit
                                        </Button>
@@ -132,11 +161,7 @@ function Orders() {
                                           variant='danger'
                                           type='button'
                                           onClick={() => {
-                                             console.log(
-                                                'Delete button clicked, order id: ',
-                                                order.id
-                                             );
-                                             handleDelete(order.id);
+                                             handleDeleteModalShow(order.id);
                                           }}>
                                           Delete
                                        </Button>
@@ -151,6 +176,31 @@ function Orders() {
             </Row>
          )}
          <ScrollButton buttonRef={buttonRef} />
+         <Modal show={showDeleteModal} onHide={handleDeleteModalClose} centered>
+            <Modal.Header closeButton>
+               <Modal.Title>Confirm Delete</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+               Confirm that you would like to delete order ID: {idToDelete}
+            </Modal.Body>
+            <Modal.Footer>
+               <Button
+                  variant='warning'
+                  className='rounded text-center'
+                  onClick={handleDeleteModalClose}>
+                  Cancel
+               </Button>
+               <Button
+                  variant='danger'
+                  className='rounded text-center'
+                  onClick={() => {
+                     handleDelete(idToDelete);
+                     handleDeleteModalClose();
+                  }}>
+                  Confirm
+               </Button>
+            </Modal.Footer>
+         </Modal>
       </Container>
    );
 }

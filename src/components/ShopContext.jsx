@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
 import { createContext, useState, useEffect } from 'react';
@@ -12,7 +13,7 @@ const ShopContextProvider = props => {
    const [orderDetails, setOrderDetails] = useState({ items: {} });
    const [orders, setOrders] = useState([]);
    const [fetchError, setFetchError] = useState(null);
-
+   const [idToEdit, setIdToEdit] = useState(0);
    useEffect(() => {
       const fetchProducts = async () => {
          try {
@@ -22,6 +23,7 @@ const ShopContextProvider = props => {
             setCartItems(initializeCart(data));
          } catch (error) {
             console.log(error);
+            setFetchError(error);
          }
       };
       fetchProducts();
@@ -31,10 +33,10 @@ const ShopContextProvider = props => {
       try {
          const response = await fetch(ORDERS_URL);
          const data = await response.json();
-         // console.log(data);
          setOrders(data);
       } catch (error) {
          console.log(error);
+         setFetchError(error);
       }
    };
 
@@ -42,9 +44,6 @@ const ShopContextProvider = props => {
       fetchOrders();
    }, []);
 
-   /***
-    * SECTION: CRUD Operations
-    */
    // This code uses the fetch API to  add a new order to the API.
    const createNewOrder = async order => {
       setOrders([...orders, order]);
@@ -63,8 +62,7 @@ const ShopContextProvider = props => {
    };
 
    // This code uses the fetch API to edit the order in the API.
-   const editOrder = async order => {
-      console.log(order.id);
+   const editOrder = async (order, id) => {
       const putOptions = {
          method: 'PUT',
          headers: {
@@ -72,7 +70,7 @@ const ShopContextProvider = props => {
          },
          body: JSON.stringify(order),
       };
-      const result = await apiRequest(`${ORDERS_URL}/${order.id}`, putOptions);
+      const result = await apiRequest(`${ORDERS_URL}/${id}`, putOptions);
       if (result) {
          setFetchError(result);
       }
@@ -151,9 +149,10 @@ const ShopContextProvider = props => {
       createNewOrder,
       editOrder,
       deleteOrder,
+      idToEdit,
+      setIdToEdit,
    };
 
-   // console.log(cartItems);
    return (
       <ShopContext.Provider value={contextValue}>{props.children}</ShopContext.Provider>
    );

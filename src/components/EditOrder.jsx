@@ -1,20 +1,37 @@
 /* eslint-disable react/prop-types */
-import { Container, Row, Col, Table } from 'react-bootstrap';
+import { Container, Row, Col, Table, Button } from 'react-bootstrap';
 import { useContext, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ShopContext } from './ShopContext';
 import QtyButton from './QtyButton';
 import CartForm from './CartForm';
 import ScrollButton from './ScrollButton';
 
-function Cart() {
-   const { cartItems, cartItemsCount, products } = useContext(ShopContext);
+function EditOrder() {
+   const { cartItems, cartItemsCount, products, clearCart } = useContext(ShopContext);
    const buttonRef = useRef(null);
+   const navigate = useNavigate();
 
    return (
       <Container fluid='lg' className='mb-1 p-1'>
          <Row>
             <Col>
-               <CartForm form={'newOrder'} />
+               <Row className='mx-3 my-2'>
+                  <Button
+                     variant='danger'
+                     className=' rounded mx-auto mt-3'
+                     onClick={() => {
+                        clearCart();
+                        navigate('/Orders');
+                     }}>
+                     Cancel
+                  </Button>
+               </Row>
+            </Col>
+         </Row>
+         <Row>
+            <Col>
+               <CartForm form={'editOrder'} />
                {cartItemsCount === 0 && (
                   <h5 className='text-center fst-italic text-danger mt-3'>
                      Your cart is empty
@@ -85,4 +102,4 @@ function Cart() {
    );
 }
 
-export default Cart;
+export default EditOrder;
