@@ -4,8 +4,17 @@ import { FaShoppingCart } from 'react-icons/fa';
 import Badge from 'react-bootstrap/Badge';
 import Button from 'react-bootstrap/Button';
 
+/**
+ * CartCounter component
+ *
+ * This is the code for the Cart Counter component
+ * It displays the number of items in the cart
+ * It functions as a link to open the cart page
+ */
 function CartCounter() {
+   // Update the cart items count in the header
    const { cartItemsCount } = useContext(ShopContext);
+
    return (
       <Button variant='dark' style={{ position: 'relative' }}>
          <FaShoppingCart size={38} className='text-tertiary' />

@@ -9,6 +9,14 @@ import EditOrder from './components/EditOrder';
 import Navigation from './components/Navigation';
 import ShopContextProvider from './components/ShopContext';
 
+/**
+ * APP component
+ *
+ * This is the code for the App component
+ * It provides the routes for the Shop, Cart, Orders, Confirmation, and EditOrder pages
+ * It also provides the ShopContextProvider
+ *
+ */
 function App() {
    return (
       <>

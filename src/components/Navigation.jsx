@@ -3,6 +3,15 @@ import Navbar from 'react-bootstrap/Navbar';
 import { NavLink } from 'react-router-dom';
 import CartCounter from './CartCounter';
 
+/**
+ * Navigation component
+ *
+ * This is the code for the Navigation component
+ * It displays the navigation bar at the top of the page
+ * It provides links to the Shop, Orders, and Cart pages
+ * It also displays the CartCounter component
+ *
+ */
 function Navigation() {
    return (
       <>

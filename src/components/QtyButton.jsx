@@ -3,7 +3,17 @@ import { Button, InputGroup, Form } from 'react-bootstrap';
 import { useContext } from 'react';
 import { ShopContext } from './ShopContext';
 
+/**
+ *
+ * QtyButton component
+ *
+ * This is the code for the QtyButton component.
+ * It displays a button to add or remove an item from the cart.
+ * It also displays the quantity of the item in the cart.
+ *
+ */
 function QtyButton({ id }) {
+   // the cart items, add item to cart, remove item from cart, and add quantity to cart functions from the shop context
    const { cartItems, addItemToCart, removeItemFromCart, addQtyToCart } =
       useContext(ShopContext);
 

@@ -9,10 +9,26 @@ import ProductCard from './ProductCard';
 import ScrollButton from './ScrollButton';
 import { ShopContext } from './ShopContext';
 
+/**
+ * Shop component
+ *
+ * this is the code for the Shop page.
+ * It displays a list of products.
+ * It also makes use of a button to scroll to the top of the page.
+ *
+ * When a product is clicked, a modal is displayed with the product information.
+ *
+ * The products are filtered based on the search term.
+ *
+ * The clear cart button is disabled when the cart is empty.
+ */
 function Shop() {
+   // the search term state is used to filter the products
    const [searchTerm, setSearchTerm] = useState('');
    const [modalShow, setModalShow] = useState(false);
+   // the selected product state is used to display the product information in the modal
    const [selectedProduct, setSelectedProduct] = useState({});
+   // the cart items count and products from the shop context
    const { clearCart, cartItemsCount, products } = useContext(ShopContext);
    const buttonRef = useRef(null);
 

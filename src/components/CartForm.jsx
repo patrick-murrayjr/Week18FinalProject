@@ -4,7 +4,21 @@ import { ShopContext } from './ShopContext';
 import { Container, Form, Button, Col, Row } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
+/**
+ * CartForm component
+ *
+ * This is the code for the Cart Form component
+ * It displays the form to enter the customer information
+ *
+ * It is used on the Cart page and the Edit Order page
+ * A different form is displayed depending on the form prop
+ * After the form is submitted, the user is redirected to the Order Confirmation page
+ *
+ *
+ */
+
 function CartForm({ form }) {
+   // set up context
    const {
       cartItems,
       cartItemsCount,
@@ -16,7 +30,7 @@ function CartForm({ form }) {
       editOrder,
       orders,
    } = useContext(ShopContext);
-
+   // find the order to edit
    const [orderToEdit] = orders.filter(order => order.id === idToEdit);
    const {
       firstName: firstNameToEdit,
@@ -27,6 +41,8 @@ function CartForm({ form }) {
       city: cityToEdit,
       zipCode: zipCodeToEdit,
    } = orderToEdit || {};
+
+   // set up state
    const [firstName, setFirstName] = useState(
       form === 'editOrder' ? firstNameToEdit : ''
    );
@@ -39,8 +55,16 @@ function CartForm({ form }) {
    const [city, setCity] = useState(form === 'editOrder' ? cityToEdit : '');
    const [zipCode, setZipCode] = useState(form === 'editOrder' ? zipCodeToEdit : '');
 
+   // handle form submit
+   // This function is called when the user clicks the Complete Purchase button
+   // It creates a new order object and calls the createNewOrder function from the context
+   // It also calls the clearCart function from the context to clear the cart
+   // It calls the resetForm function to clear the form
+   // It redirects the user to the Order Confirmation page
+
    const handleSubmit = event => {
       event.preventDefault();
+      // create a new order object
       let newOrder = {
          firstName: firstName,
          lastName: lastName,
@@ -50,6 +74,7 @@ function CartForm({ form }) {
          city: city,
          zipCode: zipCode,
          cartItems: cartItems,
+         // get the total price of the order
          totalPrice: Object.keys(cartItems)
             .reduce((acc, id) => {
                return (
@@ -62,22 +87,29 @@ function CartForm({ form }) {
             .toFixed(2),
       };
 
+      // if the form is the edit order form, call the editOrder function from the context
       if (form === 'editOrder') {
          editOrder(newOrder, idToEdit);
       }
+      // if the form is the new order form, call the createNewOrder function from the context
       if (form === 'newOrder') {
          createNewOrder(newOrder);
       }
 
+      // set the order details in the context
       setOrderDetails(newOrder);
       clearCart();
       resetForm();
+      // if the form is the new order form, redirect to the confirmation page
       form === 'newOrder' && navigate('/Confirmation');
+      // if the form is the edit order form, redirect to the orders page
       form === 'editOrder' && navigate('/Orders');
    };
 
    const navigate = useNavigate();
 
+   // This function checks if the form is valid
+   // It is used to disable the Complete Purchase button if the form is not valid
    const isValidForm = () => {
       if (
          firstName &&
@@ -93,11 +125,13 @@ function CartForm({ form }) {
       return false;
    };
 
+   // This function checks if the email is valid
    const isValidEmail = email => {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       return emailRegex.test(email);
    };
 
+   // This function resets the form
    const resetForm = () => {
       setFirstName('');
       setLastName('');

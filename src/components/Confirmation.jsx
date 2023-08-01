@@ -3,7 +3,16 @@ import { useContext } from 'react';
 import { ShopContext } from './ShopContext';
 import { useNavigate } from 'react-router-dom';
 
+/**
+ *  Order Confirmation component
+ *
+ * This is the code for the Order Confirmation page.
+ * It displays the shipping details and the order details.
+ * It also provides a button to return to the home page.
+ *
+ */
 function Confirmation() {
+   // Get the products and order details from the shop context
    const { products, orderDetails } = useContext(ShopContext);
    const navigate = useNavigate();
    return (

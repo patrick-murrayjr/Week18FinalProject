@@ -6,8 +6,22 @@ import QtyButton from './QtyButton';
 import CartForm from './CartForm';
 import ScrollButton from './ScrollButton';
 
+/**
+ * Cart component
+ *
+ *  This is the code for the Shoppping Cart page.
+ *  It displays a form to enter the customer information.
+ *  It then displays an itemized list of the items in the cart with the total.
+ *  It also makes use of a button to scroll to the top of the page.
+ *
+ *  After the form is submitted, the user is redirected to the Order Confirmation page.
+ *
+ */
 function Cart() {
+   // Get the cart items, cart items count, and products from the shop context
    const { cartItems, cartItemsCount, products } = useContext(ShopContext);
+
+   // Create a reference to the scroll button
    const buttonRef = useRef(null);
 
    return (

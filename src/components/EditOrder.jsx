@@ -7,7 +7,17 @@ import QtyButton from './QtyButton';
 import CartForm from './CartForm';
 import ScrollButton from './ScrollButton';
 
+/**
+ * Edit Order component
+ *
+ * This is the code for the Edit Order page.
+ * It displays a form to edit the customer information.
+ * It then displays an itemized list of the items in the cart with the total.
+ * It also makes use of a button to scroll to the top of the page.
+ *
+ */
 function EditOrder() {
+   // the cart items, cart items count, and products from the shop context
    const { cartItems, cartItemsCount, products, clearCart } = useContext(ShopContext);
    const buttonRef = useRef(null);
    const navigate = useNavigate();

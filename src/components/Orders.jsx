@@ -5,7 +5,16 @@ import { useNavigate } from 'react-router-dom';
 import { ShopContext } from './ShopContext';
 import ScrollButton from './ScrollButton';
 
+/**
+ * Orders component
+ *
+ * This is the code for the Orders page.
+ * It displays a table of all the orders.
+ * It also makes use of a button to scroll to the top of the page.
+ *
+ */
 function Orders() {
+   // The orders, products, deleteOrder, setIdToEdit, addQtyToCart, clearCart, and cartItems from the shop context
    const {
       orders,
       products,
@@ -15,6 +24,8 @@ function Orders() {
       clearCart,
       cartItems,
    } = useContext(ShopContext);
+
+   // set up the state for the delete modal
    const [showDeleteModal, setShowDeleteModal] = useState(false);
    const [idToDelete, setIdToDelete] = useState(0);
    const handleDeleteModalClose = () => setShowDeleteModal(false);
@@ -24,9 +35,15 @@ function Orders() {
    };
    const navigate = useNavigate();
    const buttonRef = useRef(null);
+
+   // the handleDelete function
+   // this function calls the deleteOrder function from the shop context
    const handleDelete = async id => {
       await deleteOrder(id);
    };
+
+   // the countCartItems function
+   // this function counts the number of items in the cart
    const countCartItems = () => {
       let count = 0;
       Object.values(cartItems).forEach(qty => {
@@ -34,6 +51,8 @@ function Orders() {
       });
       return count;
    };
+
+   // this clears the cart when the page is loaded
    if (countCartItems() > 0) {
       clearCart();
    }

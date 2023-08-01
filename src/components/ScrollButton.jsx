@@ -3,8 +3,22 @@ import { BsFillArrowUpSquareFill } from 'react-icons/bs';
 import { useState, useEffect } from 'react';
 import Button from 'react-bootstrap/Button';
 
+/**
+ * ScrollButton component
+ *
+ * This is the code for the ScrollButton component.
+ * It displays a button to scroll to the top of the page.
+ *
+ */
 function ScrollButton({ buttonRef }) {
+   // the scroll top state is used to determine when to display the button
    const [scrollTop, setScrollTop] = useState(0);
+
+   // the useEffect hook is used to add an event listener to the window object
+   // the event listener is used to set the scroll top state
+   // the event listener is removed when the component is unmounted
+   // the button is displayed when the scroll top state is greater than 100
+   // and hidden when the scroll top state is less than 100
 
    useEffect(() => {
       const handleScroll = () => {

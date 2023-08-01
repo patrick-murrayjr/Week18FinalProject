@@ -3,6 +3,13 @@
 import Modal from 'react-bootstrap/Modal';
 import Image from 'react-bootstrap/Image';
 
+/**
+ * Product Info component
+ *
+ * This is the code for the Product Info component.
+ * It displays the product image, title, price, category, and description.
+ *
+ */
 function ProductInfo(props) {
    return (
       <Modal

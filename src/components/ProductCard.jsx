@@ -3,10 +3,22 @@ import { useContext } from 'react';
 import { Card, Button, Image, ButtonGroup } from 'react-bootstrap';
 import { ShopContext } from './ShopContext';
 
+/**
+ * Product Card component
+ *
+ * This is the code for the Product Card component.
+ * It displays the product image, title, and price.
+ * It also provides buttons to add the product to the cart and to view the product details.
+ *
+ */
 const ProductCard = ({ setModalShow, setSelectedProduct, product }) => {
+   // the product image, title, price, and id from the product
    const { id, title, price, image } = product;
+   // the cart items, add item to cart, remove item from cart, and clear item from cart functions from the shop context
    const { cartItems, addItemToCart, removeItemFromCart, clearItem } =
       useContext(ShopContext);
+
+   // the number of items in the cart for this product
    const cartItemAmount = cartItems[id];
 
    return (
